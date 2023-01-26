@@ -1,0 +1,174 @@
+/* Resetting the Page, Setting up basic box sizing */
+* {
+    margin: 0;
+    padding: 0; /* 0% */
+    box-sizing: border-box;
+}
+/* Streamlining Sizing */
+:root {
+    --cell-size: 100px;
+    /* Making Markers Size 80% of Cell Size */
+    --mark-size: calc(var(--cell-size) * .8);
+}
+/* Removing margins of Body to help with styling */
+body {
+    margin: 0;
+}
+/* The div holding the Cells/Board */
+.board {
+    height: 70vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+/* The divs/cells themselves */
+.cell {
+    height: var(--cell-size);
+    width: var(--cell-size);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+/* Removing the Top/Left/Right/Bottom Borders of the Board */
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3) {
+    border-top: none;
+}
+/* Using Math to select the Left Side of Board */
+.cell:nth-child(3n + 1) {
+    border-left: none;
+}
+/* Using Math to select the Right Side of Board */
+.cell:nth-child(3n + 3) {
+    border-right: none;
+}
+.cell:last-child,
+.cell:nth-child(7),
+.cell:nth-child(8) {
+    border-bottom: none;
+}
+/* Making it so that when a spot occupied by x or o is hovered over a not-allowed cursor appears */
+.cell.x,
+.cell.o {
+    cursor: not-allowed;
+}
+/* Adding the color for when x and o is actually marked here, so I can have the color effect with my hover effect */
+.cell.x::before,
+.cell.x::after,
+.cell.o::before {
+    background-color: black;
+}
+/* Hover effect when hovering over empty Cell for x */
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.x .cell:not(.x):not(.o):hover::after,
+.board.o .cell:not(.x):not(.o):hover::before {
+    background-color: lightgrey;
+}
+/* Styling for x Cell Using CSS Utilizing pseudo */
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.x .cell:not(.x):not(.o):hover::after {
+    /* Changing the box original position from static to absolute, so they have the same base which is going to be the Parent and they won't overlap */
+    position: absolute;
+    /* So before and after elements render */
+    content:"";
+    /* Height will be the variable --mark-size */
+    height: var(--mark-size);
+    /* Want width to be 15% of x */
+    width: calc(var(--mark-size) * .15);
+}
+/* Using the before pseudo element to rotate the before box */
+.cell.x::before,
+.board.x .cell:not(.x):not(.o):hover::before {
+    transform: rotate(45deg);
+}
+/* Using the after pseudo element to rotate the after box */
+.cell.x::after,
+.board.x .cell:not(.x):not(.o):hover::after {
+    transform: rotate(-45deg);
+}
+/* Styling for o Cell */
+.cell.o::before,
+.cell.o::after,
+.board.o .cell:not(.x):not(.o):hover::before,
+.board.o .cell:not(.x):not(.o):hover::after {
+    /* Changing the box original position from static to absolute, so they have the same base which is going to be the Parent and they won't overlap */
+    position: absolute;
+    /* So before and after elements render */
+    content:"";
+    /* Want to set a border radius for the o shape */
+    border-radius: 50%;
+}
+/* Want this to be the larger of my circles because it will be behind the smaller circle */
+.cell.o::before,
+.board.o .cell:not(.x):not(.o):hover::before {
+    height: var(--mark-size);
+    width: var(--mark-size);
+}
+/* Inner circle */
+.cell.o::after,
+.board.o .cell:not(.x):not(.o):hover::after {
+    height: calc(var(--mark-size) * .7);
+    width: calc(var(--mark-size) * .7);
+    /* Change background-color of only the after inner circle */
+    background-color: white;
+}
+.winningMessage {
+    /* So this doesn't show up without someone winning */
+    display: none;
+    /* So that it is centered in the middle */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* To the message Transparent */
+    background-color: rgba(0, 0, 0, .9);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    font-size: 5rem;
+}
+/* Styling for Button in WinningMessage div */
+.winningMessage button {
+    font-size: 3rem;
+    background-color: white;
+    border: 1px solid black;
+    padding: .25em .5em;
+    cursor: pointer;
+}
+.winningMessage button:hover {
+    background-color: black;
+    color: white;
+    border-color: white;
+}
+/* So that winningMessage shows up correctly styled */
+.winningMessage.show {
+    display: flex;
+}
+/* Heading */
+    h1 {
+        color: orangered;
+        font-size: 45px;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 25px;
+    }
+/* Game Instruction Text */
+    .ins {
+        font-family: Verdana,
+        Geneva, Tahoma, sans-serif;
+        color: dodgerblue;
+        font-size: 17px;
+        text-align: center;
+    }
